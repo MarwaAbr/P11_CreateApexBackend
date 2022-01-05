@@ -6,7 +6,11 @@ public with sharing class P11_DataFactory {
     insert act;
     return act;
    }
-    
+    /**
+     * @author:Marwa Abroud marwa-majdoub@hotmail.com
+     * @description: create Order without Product
+     * @date:04/01/2022 13h00
+     */
    public static Order createOrder_WithoutProducts(){
         Account act = creatAccount();
         Contract contract = new Contract (AccountId= act.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
@@ -76,6 +80,15 @@ public with sharing class P11_DataFactory {
         insert ordI;
         //act.Active__c = 'Yes';
         return ord;
+    }
+    public static List<Account> createAccounts(Integer actNumber){
+        List<Account> actList = new List<Account> ();
+        for (Integer i=0; i<actNumber; i++) {
+        Account act = new Account(Name='actTest'+i);
+        actList.add(act);
+       }
+       insert actList;
+       return actList;
     }
     
     // Creation d'un produit avec PricebookEntry
