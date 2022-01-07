@@ -5,7 +5,8 @@
 */
 @isTest
 private  class P11_Test_Scheduler {
-    public static String CRON_EXP = '0 0 0 ? * 2#1';
+    
+    public static String CRON_EXP = '0 0 0 ? * 2#1';//le premier lundi du mois
 
     /**
     * @author:MarwaAbroud marwa-majdoub@hotmail.com
