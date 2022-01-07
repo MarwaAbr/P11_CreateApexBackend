@@ -1,17 +1,24 @@
+/**
+* @author:MarwaAbroud marwa-majdoub@hotmail.com
+* @description: Generate data for tests
+* @date:04/01/2022 
+*/
 @isTest
 public with sharing class P11_DataFactory {
-
-   public static Account creatAccount (){
-    Account act = new Account(Name='actTest');
-    insert act;
-    return act;
+    /**
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: Create an Account
+     */
+    public static Account creatAccount (){
+        Account act = new Account(Name='actTest');
+        insert act;
+        return act;
    }
     /**
-     * @author:Marwa Abroud marwa-majdoub@hotmail.com
-     * @description: create Order without Product
-     * @date:04/01/2022 13h00
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: Create an Order without Product
      */
-   public static Order createOrder_WithoutProducts(){
+    public static Order createOrder_WithoutProducts(){
         Account act = creatAccount();
         Contract contract = new Contract (AccountId= act.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
         insert contract;
@@ -22,6 +29,10 @@ public with sharing class P11_DataFactory {
         return ord;
     }
 
+    /**
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: create a number of Orders without Products
+     */
     public static List<Order> createOrders_WithoutProducts(Integer ordNumber){
         Account act = creatAccount();
         Contract contract = new Contract (AccountId=act.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
@@ -36,8 +47,12 @@ public with sharing class P11_DataFactory {
         insert ordList;  
         return ordList;
     }
-
-    public static List<Order> createOrders_WithoutProducts_Accounts(Integer actNumber,Integer ordNumber){
+    
+   /**
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: create a number of Accounts with a number of Orders without Products
+     */
+    public static List<Order> createAccounts_WithOrders_WithoutProducts(Integer actNumber,Integer ordNumber){
        List<Account> actList = new List<Account> ();
         for (Integer i=0; i<actNumber; i++) {
         Account act = new Account(Name='actTest'+i);
@@ -67,6 +82,11 @@ public with sharing class P11_DataFactory {
         return ordList;
     }
 
+
+    /**
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: create an Order with a Product
+     */
     public static Order createOrder_WithProduct(){
         PricebookEntry pbe =  creatProduct ();
         Account act = creatAccount();
@@ -78,9 +98,13 @@ public with sharing class P11_DataFactory {
         insert ord;
         OrderItem ordI =new OrderItem (OrderId = ord.Id, PricebookEntryId = pbe.Id, Quantity=20, UnitPrice = 1000);
         insert ordI;
-        //act.Active__c = 'Yes';
         return ord;
     }
+
+    /**
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: Create a number of Accounts
+     */
     public static List<Account> createAccounts(Integer actNumber){
         List<Account> actList = new List<Account> ();
         for (Integer i=0; i<actNumber; i++) {
@@ -91,8 +115,11 @@ public with sharing class P11_DataFactory {
        return actList;
     }
     
-    // Creation d'un produit avec PricebookEntry
-   private static PricebookEntry creatProduct (){
+    /**
+     * @author:MarwaAbroud marwa-majdoub@hotmail.com
+     * @description: this method is called in this class to create a product in an Order
+     */
+    private static PricebookEntry creatProduct (){
     Product2 pd1 = new Product2(Name = 'Chemise Verte longue XYX', Family = 'Chemise');
     Insert pd1;
     //Create the PricebookEntry
