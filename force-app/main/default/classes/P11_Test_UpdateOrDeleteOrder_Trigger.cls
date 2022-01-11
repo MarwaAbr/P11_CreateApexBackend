@@ -11,7 +11,8 @@ private class P11_Test_UpdateOrDeleteOrder_Trigger {
     */
     @isTest 
     static void updateStatus_OrderWithoutProducts (){
-        Order ord =P11_DataFactory.createOrder_WithoutProducts();
+        List<Order> ords =P11_DataFactory.createAccounts_WithOrders_WithoutProducts(1, 1);
+        Order ord =[SELECT Id FROM Order LIMIT 1];
         Test.startTest();
         ord.Status =System.label.OrderStatus_Activated;
         Database.SaveResult result = Database.update (ord, false);  
@@ -31,7 +32,7 @@ private class P11_Test_UpdateOrDeleteOrder_Trigger {
     */ 
     @isTest 
     static void updateStatus_OrdersWithoutProducts (){
-        List<Order> ordList=P11_DataFactory.createOrders_WithoutProducts(200);
+        List<Order> ordList=P11_DataFactory.createAccounts_WithOrders_WithoutProducts(1, 200);
         List<Order> ordToUpdate = new List<Order> ();
         Test.startTest();
         for (Order ord: ordList){
@@ -78,7 +79,8 @@ private class P11_Test_UpdateOrDeleteOrder_Trigger {
     */
     @isTest 
     static void delete_Order_AccountWithoutOthersOrder (){
-        Order ord = P11_DataFactory.createOrder_WithoutProducts();
+        List<Order> ords = P11_DataFactory.createAccounts_WithOrders_WithoutProducts(1, 1);
+        Order ord =[SELECT Id FROM Order LIMIT 1];
         Account act1 = [SELECT Id, Active__c FROM Account LIMIT 1];
         act1.Active__c='Yes';
         update act1;
@@ -97,7 +99,7 @@ private class P11_Test_UpdateOrDeleteOrder_Trigger {
     */
     @isTest 
     static void delete_Order_AccountWithOthersOrder (){
-        List<Order> ords = P11_DataFactory.createOrders_WithoutProducts(2);
+        List<Order> ords = P11_DataFactory.createAccounts_WithOrders_WithoutProducts(1, 2);
         Account act1 = [SELECT Id, Active__c FROM Account LIMIT 1];
         act1.Active__c='Yes';
         update act1;
@@ -116,7 +118,7 @@ private class P11_Test_UpdateOrDeleteOrder_Trigger {
     */
     @isTest 
     static void delete_AllOrder_AccountWithoutOtherOrder (){
-        List<Order> ords = P11_DataFactory.createOrders_WithoutProducts(200);
+        List<Order> ords = P11_DataFactory.createAccounts_WithOrders_WithoutProducts(1, 200);
         Account act1 = [SELECT Id, Active__c FROM Account LIMIT 1];
         act1.Active__c='Yes';
         update act1;

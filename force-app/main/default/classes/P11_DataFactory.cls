@@ -5,49 +5,7 @@
 */
 @isTest
 public with sharing class P11_DataFactory {
-    /**
-     * @author:MarwaAbroud marwa-majdoub@hotmail.com
-     * @description: Create an Account
-     */
-    public static Account creatAccount (){
-        Account act = new Account(Name='actTest');
-        insert act;
-        return act;
-   }
-    /**
-     * @author:MarwaAbroud marwa-majdoub@hotmail.com
-     * @description: Create an Order without Product
-     */
-    public static Order createOrder_WithoutProducts(){
-        Account act = creatAccount();
-        Contract contract = new Contract (AccountId= act.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
-        insert contract;
-        contract.Status = 'Activated';
-        update contract;
-        Order ord = new Order (AccountId = act.Id, ContractId=contract.Id, Status = 'Draft', EffectiveDate = System.today());
-        insert ord;  
-        return ord;
-    }
 
-    /**
-     * @author:MarwaAbroud marwa-majdoub@hotmail.com
-     * @description: create a number of Orders without Products
-     */
-    public static List<Order> createOrders_WithoutProducts(Integer ordNumber){
-        Account act = creatAccount();
-        Contract contract = new Contract (AccountId=act.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
-        insert contract;
-        contract.Status = 'Activated';
-        update contract;
-        List<Order> ordList = new List<Order>();
-        for (Integer i=0; i<ordNumber; i++ )
-        {Order ord = new Order (AccountId=act.Id, ContractId=contract.Id, Status = 'Draft', EffectiveDate = System.today());
-        ordList.add (ord);
-    }
-        insert ordList;  
-        return ordList;
-    }
-    
    /**
      * @author:MarwaAbroud marwa-majdoub@hotmail.com
      * @description: create a number of Accounts with a number of Orders without Products
@@ -59,29 +17,28 @@ public with sharing class P11_DataFactory {
         actList.add(act);
        }
        insert actList;
-       List<Contract> contrList = new List<Contract>();
-       for (Integer j=0;j<actNumber;j++) {
-           Account acct = actList[j];
-           Contract contract = new Contract (AccountId=acct.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
-           contrList.add(contract);
-        }
-        insert contrList;
-        for (Contract contr: contrList){
-            contr.Status ='Activated';
-        }
-        update contrList;
-        List<Order> ordList = new List<Order>();
-        
-        for (Contract contr : contrList){
-            for (Integer k=0; k<ordNumber; k++){
-            Order ord = new Order (AccountId=contr.AccountId, ContractId=contr.Id, Status = 'Draft', EffectiveDate = System.today());
-            ordList.add (ord);
+       List<Order> ordList = new List<Order>();
+       if(ordNumber>0){
+           List<Contract> contrList = new List<Contract>();
+           for (Integer j=0;j<actNumber;j++) {
+                Account acct = actList[j];
+                Contract contract = new Contract (AccountId=acct.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
+                contrList.add(contract);
+                for (Integer k=0; k<ordNumber; k++){
+                    Order ord = new Order (AccountId=contract.AccountId, ContractId=contract.Id, Status = 'Draft', EffectiveDate = System.today());
+                    ordList.add (ord);
+                } 
             }
+            insert contrList;
+            for (Contract contr: contrList){
+             contr.Status ='Activated';
+            }
+            update contrList;  
         }
         insert ordList;
+
         return ordList;
     }
-
 
     /**
      * @author:MarwaAbroud marwa-majdoub@hotmail.com
@@ -89,7 +46,8 @@ public with sharing class P11_DataFactory {
      */
     public static Order createOrder_WithProduct(){
         PricebookEntry pbe =  creatProduct ();
-        Account act = creatAccount();
+        Account act = new Account(Name='actTest');
+        insert act;
         Contract contract = new Contract (AccountId=act.Id, StartDate=System.today(), ContractTerm =1, Status ='Draft');
         insert contract;
         contract.Status = 'Activated';
@@ -108,9 +66,9 @@ public with sharing class P11_DataFactory {
     public static List<Account> createAccounts(Integer actNumber){
         List<Account> actList = new List<Account> ();
         for (Integer i=0; i<actNumber; i++) {
-        Account act = new Account(Name='actTest'+i);
-        actList.add(act);
-       }
+            Account act = new Account(Name='actTest'+i);
+            actList.add(act);
+        }
        insert actList;
        return actList;
     }
@@ -127,8 +85,7 @@ public with sharing class P11_DataFactory {
         Pricebook2Id = Test.getStandardPricebookId(),
         Product2Id = pd1.Id,
         UnitPrice = 1020,
-        IsActive = true
-    );
+        IsActive = true);
     insert pbe;
     return pbe;
    } 
