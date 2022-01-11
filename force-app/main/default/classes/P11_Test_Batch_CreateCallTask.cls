@@ -11,7 +11,7 @@ private class P11_Test_Batch_CreateCallTask {
     * @description: Batch test for 200 accounts without orders, which only one account has a call task
     */
     @isTest 
-    static void Test200AccountsWithoutOrders (){
+    static void test200AccountsWithoutOrders (){
         List<Account> actList=P11_DataFactory.createAccounts(200);
         Account act=actList[0];
         Task tsk = new Task (WhatId=act.Id, Status='Not Started', Subject ='Call', Priority ='Normal');
@@ -33,7 +33,7 @@ private class P11_Test_Batch_CreateCallTask {
     * @description: Batch test for 200 accounts each account has an order
     */
     @isTest 
-    static void Test200AccountsWithOrders (){
+    static void test200AccountsWithOrders (){
         P11_DataFactory.createAccounts_WithOrders_WithoutProducts(200, 1);
         Test.startTest();
         P11_Batch_CreateCallTask testBatch =new P11_Batch_CreateCallTask();
