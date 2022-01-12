@@ -28,7 +28,7 @@ private  class P11_Test_Scheduler {
         Test.stopTest();
         // Now that the scheduled job has executed,
         // check that our tasks were created
-        List<Task> lt1 = [SELECT Id FROM Task WHERE WhatId IN (SELECT Id FROM Account)];
+        List<Task> lt1 = [SELECT Id FROM Task WHERE WhatId IN (SELECT Id FROM Account)AND Subject='Call'];
         System.assertEquals(actList.size(), lt1.size(),'Tasks were not created');
         //Debug the date and time of the next execution 
         List<CronTrigger> cts = [SELECT Id, TimesTriggered, NextFireTime FROM CronTrigger WHERE Id=:jobId];
